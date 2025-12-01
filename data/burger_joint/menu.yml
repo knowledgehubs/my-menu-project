@@ -43,3 +43,18 @@ categories:
       - name: "ميلك شيك 2 فراولة"
         price: 35
         image: "shake2.jpg"
+
+  - id: "drinks2"
+    title: "🥤 المشروبات"
+    items:
+      - name: "كولا بارد"
+        price: 15
+        image: "cola.jpg"
+      
+      - name: "ميلك شيك فراولة"
+        price: 35
+        image: "shake.jpg"
+
+      - name: "ميلك شيك 2 فراولة"
+        price: 35
+        image: "shake2.jpg"
