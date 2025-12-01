@@ -1,1 +1,27 @@
+{{ $item := .item }}
+{{ $skin := .skin }}
+{{ $currency := .currency }}
 
+<article class="item-card">
+  <div class="thumb-wrapper">
+    {{ partial "thumbnail.html" (dict "image" $item.image "skin" $skin "alt" $item.name "w" 120 "h" 120) }}
+  </div>
+
+  <div class="item-body">
+    <div class="item-header">
+      <h3 class="item-title">{{ $item.name }}</h3>
+      <div class="badges">
+        {{ if $item.is_spicy }}<span class="badge spicy">🌶️</span>{{ end }}
+        {{ if $item.is_new }}<span class="badge new">New</span>{{ end }}
+      </div>
+    </div>
+    
+    {{ with $item.description }}
+      <p class="item-desc">{{ . }}</p>
+    {{ end }}
+
+    <div class="item-footer">
+      <span class="price">{{ $item.price }} {{ $currency }}</span>
+    </div>
+  </div>
+</article>
