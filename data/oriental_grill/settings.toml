@@ -1,1 +1,7 @@
-
+title = "مشويات الشرق"
+logo = "logo.png"
+currency = "ر.س"
+direction = "rtl"  # 👈 سيقلب المنيو لليمين تلقائياً
+language = "ar"
+primaryColor = "#10b981"
+accentColor = "#1f2937"
