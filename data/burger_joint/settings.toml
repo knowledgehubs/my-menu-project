@@ -1,1 +1,7 @@
-
+title = "Burger Joint"
+logo = "logo.png"
+currency = "EGP"
+direction = "ltr"  # 👈 الاتجاه
+language = "en"
+primaryColor = "#ff6b35"
+accentColor = "#222222"
