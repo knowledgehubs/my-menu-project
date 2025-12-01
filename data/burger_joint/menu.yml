@@ -39,3 +39,15 @@ categories:
       - name: "ميلك شيك فراولة"
         price: 35
         image: "shake.jpg"
+
+    - id: "micky"
+    title: "الساخن والساقع"
+    items:
+      - name: "كولا ميكى"
+        price: 10000000
+        image: "cola.jpg"
+      
+      - name: "ميلك شيك فراولة"
+        price: 35
+        image: "shake.jpg"
+
