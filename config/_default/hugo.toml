@@ -1,9 +1,12 @@
-baseURL = "/"
+# ⚠️ هذا الرابط يجب أن يكون دقيقاً جداً وينتهي بـ Slash /
+baseURL = "https://knowledgehubs.github.io/my-menu-project/"
 languageCode = "en-us"
 title = "Digital Menu Engine"
 
+# لتصحيح مسارات الروابط داخل مجلد المشروع
+canonifyURLs = true
+
 [server]
-  # مفيد للتطوير المحلي لرؤية الصور
   disableFastRender = true
 
 [markup.goldmark.renderer]
