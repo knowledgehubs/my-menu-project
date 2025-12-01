@@ -1,1 +1,10 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "Digital Menu Engine"
 
+[server]
+  # مفيد للتطوير المحلي لرؤية الصور
+  disableFastRender = true
+
+[markup.goldmark.renderer]
+  unsafe = true
