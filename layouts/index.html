@@ -1,1 +1,67 @@
+<!doctype html>
+{{/* قراءة السكين من الرابط أو الإعدادات الافتراضية */}}
+{{ $skinParam := (getQuery . "skin") }}
+{{ $skin := cond (ne $skinParam "") $skinParam (default "burger_joint" .Site.Params.active_skin) }}
+{{ $data := index .Site.Data $skin }}
 
+{{ if not $data }}
+  <body><h1>Error: Skin '{{ $skin }}' not found in Data folder.</h1></body>
+{{ else }}
+
+<html lang="{{ $data.settings.language | default "en" }}" dir="{{ $data.settings.direction | default "ltr" }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{{ $data.settings.title }}</title>
+    
+    {{/* تحميل الستايل ومعالجته */}}
+    {{ $style := resources.Get "scss/main.scss" | toCSS | minify }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+
+    {{/* حقن الألوان ديناميكياً */}}
+    <style>
+      :root {
+        --primary: {{ $data.settings.primaryColor | default "#000" }};
+        --accent: {{ $data.settings.accentColor | default "#333" }};
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      
+      <header class="main-header">
+        <div class="logo-area">
+          {{ partial "thumbnail.html" (dict "image" $data.settings.logo "skin" $skin "w" 50 "h" 50) }}
+        </div>
+        <div class="header-info">
+          <h1>{{ $data.settings.title }}</h1>
+        </div>
+      </header>
+
+      <nav class="sticky-nav">
+        <div class="cat-list">
+          <button class="cat-btn active" data-cat="all">All</button>
+          {{ range $data.menu.categories }}
+            <button class="cat-btn" data-cat="{{ .id }}">{{ .title }}</button>
+          {{ end }}
+        </div>
+      </nav>
+
+      <main id="menu-items">
+        {{ range $data.menu.categories }}
+          <section class="menu-section" data-category="{{ .id }}">
+            <h2 class="section-title">{{ .title }}</h2>
+            <div class="items-grid">
+              {{ range .items }}
+                {{ partial "menu-item.html" (dict "item" . "skin" $skin "currency" $data.settings.currency) }}
+              {{ end }}
+            </div>
+          </section>
+        {{ end }}
+      </main>
+
+    </div>
+    <script src="{{ (resources.Get "js/menu-filter.js").RelPermalink }}"></script>
+  </body>
+</html>
+{{ end }}
