@@ -1,11 +1,16 @@
 <!doctype html>
-{{/* قراءة السكين من الرابط أو الإعدادات الافتراضية */}}
-{{ $skinParam := (getQuery . "skin") }}
-{{ $skin := cond (ne $skinParam "") $skinParam (default "burger_joint" .Site.Params.active_skin) }}
+{{/* 1. تحديد السكين بناءً على ملف الإعدادات فقط */}}
+{{ $skin := .Site.Params.active_skin | default "burger_joint" }}
 {{ $data := index .Site.Data $skin }}
 
+{{/* 2. التحقق من وجود البيانات لتجنب توقف البناء */}}
 {{ if not $data }}
-  <body><h1>Error: Skin '{{ $skin }}' not found in Data folder.</h1></body>
+  <body>
+    <div style="padding: 20px; font-family: sans-serif; text-align: center;">
+      <h1 style="color: #dc2626;">Error: Skin '{{ $skin }}' not found.</h1>
+      <p>Please check your <code>hugo.toml</code> and ensure the <code>active_skin</code> value matches a folder name in your <code>data/</code> directory.</p>
+    </div>
+  </body>
 {{ else }}
 
 <html lang="{{ $data.settings.language | default "en" }}" dir="{{ $data.settings.direction | default "ltr" }}">
@@ -14,11 +19,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>{{ $data.settings.title }}</title>
     
-    {{/* تحميل الستايل ومعالجته */}}
+    {{/* 3. تحميل الستايل الأساسي ومعالجته */}}
     {{ $style := resources.Get "scss/main.scss" | toCSS | minify }}
     <link rel="stylesheet" href="{{ $style.Permalink }}">
 
-    {{/* حقن الألوان ديناميكياً */}}
+    {{/* 4. حقن الألوان والخطوط ديناميكياً من البيانات */}}
     <style>
       :root {
         --primary: {{ $data.settings.primaryColor | default "#000" }};
@@ -31,7 +36,8 @@
       
       <header class="main-header">
         <div class="logo-area">
-          {{ partial "thumbnail.html" (dict "image" $data.settings.logo "skin" $skin "w" 50 "h" 50) }}
+          {{/* استدعاء مكون الصورة المصغرة للوجو */}}
+          {{ partial "thumbnail.html" (dict "image" $data.settings.logo "skin" $skin "w" 50 "h" 50 "alt" "Logo") }}
         </div>
         <div class="header-info">
           <h1>{{ $data.settings.title }}</h1>
@@ -53,6 +59,7 @@
             <h2 class="section-title">{{ .title }}</h2>
             <div class="items-grid">
               {{ range .items }}
+                {{/* استدعاء كارت الصنف وتمرير العملة */}}
                 {{ partial "menu-item.html" (dict "item" . "skin" $skin "currency" $data.settings.currency) }}
               {{ end }}
             </div>
@@ -61,7 +68,9 @@
       </main>
 
     </div>
-    <script src="{{ (resources.Get "js/menu-filter.js").RelPermalink }}"></script>
+    
+    {{ $js := resources.Get "js/menu-filter.js" | minify }}
+    <script src="{{ $js.RelPermalink }}"></script>
   </body>
 </html>
 {{ end }}
